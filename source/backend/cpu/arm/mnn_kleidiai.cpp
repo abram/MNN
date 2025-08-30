@@ -8,9 +8,21 @@
 
 #include "mnn_kleidiai.h"
 
-// MSVC doesn't support __fp16, use alternative
+// MSVC doesn't support __fp16, use IEEE 754 half-precision representation
 #ifdef _MSC_VER
+#if defined(_M_ARM64) || defined(_M_ARM64EC)
+// Use proper 16-bit float type if available, otherwise fallback to storage type
+#ifdef _Float16
+typedef _Float16 __fp16;
+#else
+// IEEE 754 half-precision stored as uint16_t - this requires proper conversion
+// but for the KleidiAI usage context (mostly size calculations), uint16_t works
 typedef uint16_t __fp16;
+#pragma message("Using uint16_t for __fp16 - proper conversion functions may be needed")
+#endif
+#else
+#error "ARM64 architecture required for __fp16 emulation"
+#endif
 #endif
 
 using namespace MNN;
