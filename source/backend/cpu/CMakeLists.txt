@@ -29,8 +29,10 @@ if (MNN_USE_SSE)
     include(${CMAKE_CURRENT_LIST_DIR}/x86_x64/CMakeLists.txt)
 endif()
 
-# AArch32/64 Assemblies
-include(${CMAKE_CURRENT_LIST_DIR}/arm/CMakeLists.txt)
+# AArch32/64 Assemblies - only include if not using MSVC (MSVC doesn't support GNU assembly)
+if(NOT MSVC)
+    include(${CMAKE_CURRENT_LIST_DIR}/arm/CMakeLists.txt)
+endif()
 
 IF(NOT DEFINED IOS_ARCH)
     set(IOS_ARCH "")

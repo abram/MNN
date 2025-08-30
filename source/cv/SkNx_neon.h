@@ -390,7 +390,7 @@ public:
     }
     AI SkNx operator >> (int bits) const { 
 #ifdef _MSC_VER
-        return vshr_n_u16(fVec, bits);
+        return vshl_u16(fVec, vdup_n_s16(-bits));
 #else
         return fVec >> SkNx(bits).fVec; 
 #endif
@@ -440,14 +440,14 @@ public:
 
     AI SkNx operator << (int bits) const { 
 #ifdef _MSC_VER
-        return vshl_u16(fVec, vdup_n_s16(bits));
+        return vshlq_u16(fVec, vdupq_n_s16(bits));
 #else
         return fVec << SkNx(bits).fVec; 
 #endif
     }
     AI SkNx operator >> (int bits) const { 
 #ifdef _MSC_VER
-        return vshr_n_u16(fVec, bits);
+        return vshlq_u16(fVec, vdupq_n_s16(-bits));
 #else
         return fVec >> SkNx(bits).fVec; 
 #endif
@@ -619,14 +619,14 @@ public:
 
     AI SkNx operator << (int bits) const { 
 #ifdef _MSC_VER
-        return vshl_u16(fVec, vdup_n_s16(bits));
+        return vshlq_s32(fVec, vdupq_n_s32(bits));
 #else
         return fVec << SkNx(bits).fVec; 
 #endif
     }
     AI SkNx operator >> (int bits) const { 
 #ifdef _MSC_VER
-        return vshr_n_u16(fVec, bits);
+        return vshlq_s32(fVec, vdupq_n_s32(-bits));
 #else
         return fVec >> SkNx(bits).fVec; 
 #endif
@@ -694,14 +694,14 @@ public:
 
     AI SkNx operator << (int bits) const { 
 #ifdef _MSC_VER
-        return vshl_u16(fVec, vdup_n_s16(bits));
+        return vshlq_u32(fVec, vdupq_n_s32(bits));
 #else
         return fVec << SkNx(bits).fVec; 
 #endif
     }
     AI SkNx operator >> (int bits) const { 
 #ifdef _MSC_VER
-        return vshr_n_u16(fVec, bits);
+        return vshlq_u32(fVec, vdupq_n_s32(-bits));
 #else
         return fVec >> SkNx(bits).fVec; 
 #endif

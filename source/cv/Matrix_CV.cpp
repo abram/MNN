@@ -792,8 +792,14 @@ void Matrix::Affine_vpts(const Matrix& m, Point dst[], const Point src[], int co
             float* d       = (float*)dst;
             auto sv        = vld2q_f32(s);
             float32x4x2_t dv;
+#ifdef _MSC_VER
+            // Use explicit intrinsics for MSVC ARM64
+            dv.val[0] = vaddq_f32(tx4, vaddq_f32(vmulq_f32(sv.val[0], sx4), vmulq_f32(sv.val[1], kx4)));
+            dv.val[1] = vaddq_f32(ty4, vaddq_f32(vmulq_f32(sv.val[0], ky4), vmulq_f32(sv.val[1], sy4)));
+#else
             dv.val[0] = tx4 + sv.val[0] * sx4 + sv.val[1] * kx4;
             dv.val[1] = ty4 + sv.val[0] * ky4 + sv.val[1] * sy4;
+#endif
             vst2q_f32(d, dv);
 
             src += 4;
