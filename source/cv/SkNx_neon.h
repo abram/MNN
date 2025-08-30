@@ -381,8 +381,20 @@ public:
     AI SkNx operator & (const SkNx& o) const { return vand_u16(fVec, o.fVec); }
     AI SkNx operator | (const SkNx& o) const { return vorr_u16(fVec, o.fVec); }
 
-    AI SkNx operator << (int bits) const { return fVec << SkNx(bits).fVec; }
-    AI SkNx operator >> (int bits) const { return fVec >> SkNx(bits).fVec; }
+    AI SkNx operator << (int bits) const { 
+#ifdef _MSC_VER
+        return vshl_u16(fVec, vdup_n_s16(bits));
+#else
+        return fVec << SkNx(bits).fVec; 
+#endif
+    }
+    AI SkNx operator >> (int bits) const { 
+#ifdef _MSC_VER
+        return vshr_n_u16(fVec, bits);
+#else
+        return fVec >> SkNx(bits).fVec; 
+#endif
+    }
 
     AI static SkNx Min(const SkNx& a, const SkNx& b) { return vmin_u16(a.fVec, b.fVec); }
 
@@ -426,8 +438,20 @@ public:
     AI SkNx operator & (const SkNx& o) const { return vandq_u16(fVec, o.fVec); }
     AI SkNx operator | (const SkNx& o) const { return vorrq_u16(fVec, o.fVec); }
 
-    AI SkNx operator << (int bits) const { return fVec << SkNx(bits).fVec; }
-    AI SkNx operator >> (int bits) const { return fVec >> SkNx(bits).fVec; }
+    AI SkNx operator << (int bits) const { 
+#ifdef _MSC_VER
+        return vshl_u16(fVec, vdup_n_s16(bits));
+#else
+        return fVec << SkNx(bits).fVec; 
+#endif
+    }
+    AI SkNx operator >> (int bits) const { 
+#ifdef _MSC_VER
+        return vshr_n_u16(fVec, bits);
+#else
+        return fVec >> SkNx(bits).fVec; 
+#endif
+    }
 
     AI static SkNx Min(const SkNx& a, const SkNx& b) { return vminq_u16(a.fVec, b.fVec); }
 
@@ -454,7 +478,7 @@ public:
 template <>
 class SkNx<4, uint8_t> {
 public:
-    typedef uint32_t __attribute__((aligned(1))) unaligned_uint32_t;
+    typedef uint32_t unaligned_uint32_t;
 
     AI SkNx(const uint8x8_t& vec) : fVec(vec) {}
 
@@ -593,8 +617,20 @@ public:
     AI SkNx operator | (const SkNx& o) const { return vorrq_s32(fVec, o.fVec); }
     AI SkNx operator ^ (const SkNx& o) const { return veorq_s32(fVec, o.fVec); }
 
-    AI SkNx operator << (int bits) const { return fVec << SkNx(bits).fVec; }
-    AI SkNx operator >> (int bits) const { return fVec >> SkNx(bits).fVec; }
+    AI SkNx operator << (int bits) const { 
+#ifdef _MSC_VER
+        return vshl_u16(fVec, vdup_n_s16(bits));
+#else
+        return fVec << SkNx(bits).fVec; 
+#endif
+    }
+    AI SkNx operator >> (int bits) const { 
+#ifdef _MSC_VER
+        return vshr_n_u16(fVec, bits);
+#else
+        return fVec >> SkNx(bits).fVec; 
+#endif
+    }
 
     AI SkNx operator == (const SkNx& o) const {
         return vreinterpretq_s32_u32(vceqq_s32(fVec, o.fVec));
@@ -656,8 +692,20 @@ public:
     AI SkNx operator | (const SkNx& o) const { return vorrq_u32(fVec, o.fVec); }
     AI SkNx operator ^ (const SkNx& o) const { return veorq_u32(fVec, o.fVec); }
 
-    AI SkNx operator << (int bits) const { return fVec << SkNx(bits).fVec; }
-    AI SkNx operator >> (int bits) const { return fVec >> SkNx(bits).fVec; }
+    AI SkNx operator << (int bits) const { 
+#ifdef _MSC_VER
+        return vshl_u16(fVec, vdup_n_s16(bits));
+#else
+        return fVec << SkNx(bits).fVec; 
+#endif
+    }
+    AI SkNx operator >> (int bits) const { 
+#ifdef _MSC_VER
+        return vshr_n_u16(fVec, bits);
+#else
+        return fVec >> SkNx(bits).fVec; 
+#endif
+    }
 
     AI SkNx operator == (const SkNx& o) const { return vceqq_u32(fVec, o.fVec); }
     AI SkNx operator <  (const SkNx& o) const { return vcltq_u32(fVec, o.fVec); }
