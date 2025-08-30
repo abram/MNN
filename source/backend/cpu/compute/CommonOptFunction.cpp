@@ -1363,7 +1363,15 @@ void MNNAccumulateSequenceNumber (float* dst, const float* src, int size) {
             src += 8;
         }
         sum4_1 = vaddq_f32(sum4_1, sum4_2);
-        sum = (sum4_1[0] + sum4_1[1]) + (sum4_1[2] + sum4_1[3]);
+        {
+#ifdef _MSC_VER
+            union { float32x4_t vec; float arr[4]; } u;
+            u.vec = sum4_1;
+            sum = (u.arr[0] + u.arr[1]) + (u.arr[2] + u.arr[3]);
+#else
+            sum = (sum4_1[0] + sum4_1[1]) + (sum4_1[2] + sum4_1[3]);
+#endif
+        }
     }
 #elif defined(MNN_USE_SSE)
     if (size >= 8) {

@@ -8,6 +8,11 @@
 
 #include "mnn_kleidiai.h"
 
+// MSVC doesn't support __fp16, use alternative
+#ifdef _MSC_VER
+typedef uint16_t __fp16;
+#endif
+
 using namespace MNN;
 
 bool KleidiAI::mKaiInitialized = false;
@@ -321,7 +326,7 @@ void KleidiAI::runLhsQuantPack(AccelType type, size_t m, size_t k, size_t bl, si
     case AccelType::QI4_ASYM_CHNLQT_F16:
         bl = k;
     case AccelType::QI4_ASYM_BLKQT_F16:
-        kai_run_lhs_quant_pack_qsi8d32pscalef32_f16_neon(m, k, bl, mr, getKr(type), getSr(type), 0, (const __fp16 *)lhs, k * sizeof(__fp16), lhsQuantedPacked);
+        kai_run_lhs_quant_pack_qsi8d32pscalef32_f16_neon(m, k, bl, mr, getKr(type), getSr(type), 0, (const __fp16 *)lhs, k * sizeof(uint16_t), lhsQuantedPacked);
         break;
     default:
         MNN_ASSERT(0);
@@ -525,7 +530,7 @@ void KleidiAI::runMatmul(AccelType type, size_t m, size_t n, size_t k, size_t bl
     case AccelType::FP16:
     {
         if (m == 1) {
-            kai_run_matmul_clamp_f16_f16_f16p2vlx2b_1x16vl_sme2_dot(m, n, k, lhsPacked, k * sizeof(__fp16), rhsPacked, dst, dstStrideRow, dstStrideCol, scalarMin, scalarMax);
+            kai_run_matmul_clamp_f16_f16_f16p2vlx2b_1x16vl_sme2_dot(m, n, k, lhsPacked, k * sizeof(uint16_t), rhsPacked, dst, dstStrideRow, dstStrideCol, scalarMin, scalarMax);
         } else {
             kai_run_matmul_clamp_f16_f16p2vlx2_f16p2vlx2_2vlx2vl_sme2_mopa(m, n, k, lhsPacked, rhsPacked, dst, dstStrideRow , dstStrideCol, scalarMin, scalarMax);
         }

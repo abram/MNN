@@ -584,7 +584,7 @@ Backend::MemObj* CPUBackend::allocBuffer(size_t size, Tensor* dest, StorageType 
     }
     // MNN_PRINT("Acquire size = %d\n", size);
     if (size <= 0) {
-        MNN_PRINT("Acquire buffer size = %lu\n", size);
+        MNN_PRINT("Acquire buffer size = %zu\n", size);
         MNN_ASSERT(false);
         return nullptr;
     }

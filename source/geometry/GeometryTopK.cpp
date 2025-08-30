@@ -16,7 +16,7 @@ public:
     virtual bool onCompute(const Op* op, const std::vector<Tensor*>& inputs, const std::vector<Tensor*>& outputs,
                            Context& context, CommandBuffer& res) const override {
         if (outputs.size() != 2 || inputs.size() < 2 || inputs.size() > 3) {
-            MNN_ERROR("TopK should have 2 output and 2~3 input, get %lu in and %lu out\n", inputs.size(), outputs.size());
+            MNN_ERROR("TopK should have 2 output and 2~3 input, get %zu in and %zu out\n", inputs.size(), outputs.size());
             return false;
         }
         int numAxes = inputs[0]->dimensions(), axis = numAxes - 1;

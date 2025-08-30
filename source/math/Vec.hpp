@@ -225,7 +225,14 @@ struct Vec<int32_t, 4> {
         value = std::move(lr.value);
     }
     float operator[](size_t i) {
+#ifdef _MSC_VER
+        // MSVC doesn't support subscript operator on NEON vectors
+        union { int32x4_t vec; int32_t arr[4]; } u;
+        u.vec = value;
+        return (float)u.arr[i];
+#else
         return value[i];
+#endif
     }
     static VecType load(const float* addr) {
         VecType v = { (int32x4_t)(vld1q_f32(addr)) };
@@ -387,7 +394,14 @@ struct Vec<float, 4> {
         value = std::move(lr.value);
     }
     float operator[](size_t i) {
+#ifdef _MSC_VER
+        // MSVC doesn't support subscript operator on NEON vectors
+        union { float32x4_t vec; float arr[4]; } u;
+        u.vec = value;
+        return u.arr[i];
+#else
         return value[i];
+#endif
     }
     static VecType load(const float* addr) {
         VecType v = { vld1q_f32(addr) };

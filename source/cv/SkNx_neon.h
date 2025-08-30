@@ -38,7 +38,14 @@ public:
 
     AI SkNx() {}
     AI SkNx(float val) : fVec(vdup_n_f32(val)) {}
-    AI SkNx(float a, float b) { fVec = (float32x2_t) { a, b }; }
+    AI SkNx(float a, float b) { 
+#ifdef _MSC_VER
+        float vals[2] = {a, b};
+        fVec = vld1_f32(vals); 
+#else
+        fVec = (float32x2_t) { a, b }; 
+#endif
+    }
 
     AI static SkNx Load(const void* ptr) { return vld1_f32((const float*)ptr); }
     AI void store(void* ptr) const { vst1_f32((float*)ptr, fVec); }
@@ -172,7 +179,14 @@ public:
 
     AI SkNx() {}
     AI SkNx(float val) : fVec(vdupq_n_f32(val)) {}
-    AI SkNx(float a, float b, float c, float d) { fVec = (float32x4_t) { a, b, c, d }; }
+    AI SkNx(float a, float b, float c, float d) { 
+#ifdef _MSC_VER
+        float vals[4] = {a, b, c, d};
+        fVec = vld1q_f32(vals); 
+#else
+        fVec = (float32x4_t) { a, b, c, d }; 
+#endif
+    }
 
     AI static SkNx Load(const void* ptr) { return vld1q_f32((const float*)ptr); }
     AI void store(void* ptr) const { vst1q_f32((float*)ptr, fVec); }
@@ -327,7 +341,12 @@ public:
     AI SkNx() {}
     AI SkNx(uint16_t val) : fVec(vdup_n_u16(val)) {}
     AI SkNx(uint16_t a, uint16_t b, uint16_t c, uint16_t d) {
+#ifdef _MSC_VER
+        uint16_t vals[4] = {a, b, c, d};
+        fVec = vld1_u16(vals);
+#else
         fVec = (uint16x4_t) { a,b,c,d };
+#endif
     }
 
     AI static SkNx Load(const void* ptr) { return vld1_u16((const uint16_t*)ptr); }
@@ -391,7 +410,12 @@ public:
 
     AI SkNx(uint16_t a, uint16_t b, uint16_t c, uint16_t d,
             uint16_t e, uint16_t f, uint16_t g, uint16_t h) {
+#ifdef _MSC_VER
+        uint16_t vals[8] = {a, b, c, d, e, f, g, h};
+        fVec = vld1q_u16(vals);
+#else
         fVec = (uint16x8_t) { a,b,c,d, e,f,g,h };
+#endif
     }
 
     AI void store(void* ptr) const { vst1q_u16((uint16_t*)ptr, fVec); }
@@ -436,7 +460,12 @@ public:
 
     AI SkNx() {}
     AI SkNx(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
+#ifdef _MSC_VER
+        uint8_t vals[8] = {a, b, c, d, 0, 0, 0, 0};
+        fVec = vld1_u8(vals);
+#else
         fVec = (uint8x8_t){a,b,c,d, 0,0,0,0};
+#endif
     }
     AI static SkNx Load(const void* ptr) {
         return (uint8x8_t)vld1_dup_u32((const unaligned_uint32_t*)ptr);
@@ -464,7 +493,12 @@ public:
     AI SkNx(uint8_t val) : fVec(vdup_n_u8(val)) {}
     AI SkNx(uint8_t a, uint8_t b, uint8_t c, uint8_t d,
             uint8_t e, uint8_t f, uint8_t g, uint8_t h) {
+#ifdef _MSC_VER
+        uint8_t vals[8] = {a, b, c, d, e, f, g, h};
+        fVec = vld1_u8(vals);
+#else
         fVec = (uint8x8_t) { a,b,c,d, e,f,g,h };
+#endif
     }
 
     AI static SkNx Load(const void* ptr) { return vld1_u8((const uint8_t*)ptr); }
@@ -490,7 +524,12 @@ public:
             uint8_t e, uint8_t f, uint8_t g, uint8_t h,
             uint8_t i, uint8_t j, uint8_t k, uint8_t l,
             uint8_t m, uint8_t n, uint8_t o, uint8_t p) {
+#ifdef _MSC_VER
+        uint8_t vals[16] = {a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p};
+        fVec = vld1q_u8(vals);
+#else
         fVec = (uint8x16_t) { a,b,c,d, e,f,g,h, i,j,k,l, m,n,o,p };
+#endif
     }
 
     AI static SkNx Load(const void* ptr) { return vld1q_u8((const uint8_t*)ptr); }
@@ -527,7 +566,12 @@ public:
         fVec = vdupq_n_s32(v);
     }
     AI SkNx(int32_t a, int32_t b, int32_t c, int32_t d) {
+#ifdef _MSC_VER
+        int32_t vals[4] = {a, b, c, d};
+        fVec = vld1q_s32(vals);
+#else
         fVec = (int32x4_t){a,b,c,d};
+#endif
     }
     AI static SkNx Load(const void* ptr) {
         return vld1q_s32((const int32_t*)ptr);
@@ -585,7 +629,12 @@ public:
         fVec = vdupq_n_u32(v);
     }
     AI SkNx(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
+#ifdef _MSC_VER
+        uint32_t vals[4] = {a, b, c, d};
+        fVec = vld1q_u32(vals);
+#else
         fVec = (uint32x4_t){a,b,c,d};
+#endif
     }
     AI static SkNx Load(const void* ptr) {
         return vld1q_u32((const uint32_t*)ptr);
